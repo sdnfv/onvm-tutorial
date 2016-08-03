@@ -93,6 +93,6 @@ We are running the NF using core 4 (since the manager used 0-3) and assigning it
 
 ## Help!? Troubleshooting Guide
 Check the following:
-  - Are you running the NF manager?  It should print stats every few seconds if it is working correctly
+  - Are you running the NF manager?  It should print stats every few seconds if it is working correctly. It must be started before any other NFs.
   - Does the manager fail to start with an error about huge pages? Be sure you don't have an old version of the manager running: `killall onvm_mgr` Try running `rm -rf /mnt/huge/rte*` to clean out the old huge pages.
   - Is performance terrible?  Make sure you aren't using the same core for two NFs or for both the manager and an NF.  The core IDs in the lists should be unique and all from the same socket.  Run `$ONVM/scripts/corehelper.py -c` to see a list of core IDs and their mapping to sockets.
