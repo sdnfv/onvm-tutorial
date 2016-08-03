@@ -12,7 +12,7 @@ node 6       ssh tutorial@c220g2-011317.wisc.cloudlab.us
 node 7       ssh tutorial@c220g2-011307.wisc.cloudlab.us
 node 8       ssh tutorial@c220g2-011315.wisc.cloudlab.us
 ```
-You will be assigned node 3, 4, 5, 6, or 7.
+You will be assigned node 3, 4, 5, 6, or 7.  Please do not use any servers not assigned to you. You may only use these servers for the tutorial; let me know if you want to keep playing with things after the session ends.
 
 Thanks to [CloudLab.us](http://cloudlab.us) for the servers! These servers are of type c220g2 from the Wisconsin site, with Two Intel E5-2660 v3 10-core CPUs at 2.60 GHz (Haswell EP), 160GB RAM, and a Dual-port Intel X520 10Gb NIC.
 
@@ -21,7 +21,7 @@ Thanks to [CloudLab.us](http://cloudlab.us) for the servers! These servers are o
 Log into your server using the username and password provided in the slides. Open two SSH connections to your server (one for the manager, one for running an NF).
 
 After you log in, run these commands **in both terminals** and verify you are now in the `/local/openNetVM/` directory.
-```
+```bash
 # become root
 sudo -s
 # load environment variables
@@ -38,7 +38,7 @@ pwd
 
 Use these commands to start the NF Manager. It will display some logs from DPDK, and then start a stats loop that displays information about network ports and active NFs.
 
-```
+```bash
 cd $ONVM/onvm
 ./go.sh  0,1,2,3  3
 # usage: ./go.sh CORE_LIST PORT_LIST
@@ -63,7 +63,7 @@ Next use your second window to start the Speed Tester NF.  When run in this way,
 
 **Be sure the manager is still running in your other window.**
 
-```
+```bash
 cd $ONVM/examples/speed_tester
 ./go.sh 4 1 1
 # usage: ./go.sh CORE_LIST NF_ID DEST_ID
@@ -82,7 +82,7 @@ This shows the NF is able to process about 21 million packets per second.
 ## Bridging Ports
 After killing the speed tester, use the same window to run the Bridge NF.  This NF reads packets from one port and sends them out the other port.
 
-```
+```bash
 cd examples/bridge
 ./go.sh 4 1
 # usage: ./go.sh CORE_LIST NF_ID
