@@ -16,7 +16,7 @@ You will be assigned node 3, 4, 5, 6, or 7.  Please do not use any servers not a
 
 Thanks to [CloudLab.us](http://cloudlab.us) for the servers! These servers are of type c220g2 from the Wisconsin site, with Two Intel E5-2660 v3 10-core CPUs at 2.60 GHz (Haswell EP), 160GB RAM, and a Dual-port Intel X520 10Gb NIC.
 
-## Log in and Setup Environment
+## 1. Log in and Setup Environment
 
 Log into your server using the username and password provided in the slides. Open two SSH connections to your server (one for the manager, one for running an NF).
 
@@ -34,14 +34,14 @@ pwd
 
 **Don't proceed to the next step until instructed.**
 
-## Start the ONVM NF Manager
+## 2. Start the ONVM NF Manager
 
 Use these commands to start the NF Manager. It will display some logs from DPDK, and then start a stats loop that displays information about network ports and active NFs.
 
 ```bash
 cd $ONVM/onvm
 ./go.sh  0,1,2,3  3
-# usage: ./go.sh CORE_LIST PORT_LIST
+# usage: ./go.sh CORE_LIST PORT_BITMASK
 ```
 The above command starts the manager using cores 0, 1, 2, and 3. It uses a bitmaks of 3 to specify that ports 1 and 2 should be used (3 = 0b11).
 
@@ -58,7 +58,7 @@ This shows no packets have arrived and there are currently no clients (NFs).
 
 **Don't proceed to the next step until instructed.**
 
-## Speed Tester Benchmark
+## 3. Speed Tester Benchmark
 Next use your second window to start the Speed Tester NF.  When run in this way, the Speed Tester simply creates a batch of packets and repeatedly sends them to itself in order to stress test the management system.
 
 **Be sure the manager is still running in your other window.**
@@ -79,7 +79,7 @@ This shows the NF is able to process about 21 million packets per second.
 
 **Kill the speed tester by pressing `ctrl-c` before proceeding to the next step.**  Leave the manager running.
 
-## Bridging Ports
+## 4. Bridging Ports
 After killing the speed tester, use the same window to run the Bridge NF.  This NF reads packets from one port and sends them out the other port.
 
 ```bash
@@ -91,3 +91,8 @@ We are running the NF using core 4 (since the manager used 0-3) and assigning it
 
 **Keep your bridge NF running until we have the full chain of 8 servers working.  (Cross your fingers this will work)**
 
+## Help!? Troubleshooting Guide
+Check the following:
+  - Are you running the NF manager?  It should print stats every few seconds if it is working correctly
+  - Does the manager fail to start with an error about huge pages? Be sure you don't have an old version of the manager running: `killall onvm_mgr` Try running `rm -rf /mnt/huge/rte*` to clean out the old huge pages.
+  - Is performance terrible?  Make sure you aren't using the same core for two NFs or for both the manager and an NF.  The core IDs in the lists should be unique and all from the same socket.  Run `$ONVM/scripts/corehelper.py -c` to see a list of core IDs and their mapping to sockets.
