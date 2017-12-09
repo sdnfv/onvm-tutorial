@@ -31,7 +31,8 @@ for n in range(NUM_NODES):
 	node = request.RawPC("node" + str(cnt))
 	node.hardware_type = NODE_TYPE
 	node.disk_image = 'urn:publicid:IDN+wisc.cloudlab.us+image+gwcloudlab-PG0:onvm_17.11:1'
-	nodes.append(node)
+	node.addService(rspec.Execute(shell="bash", command="/local/onvm/onvm-tutorial/setup.sh"))
+	nodes.append(node)	
 	cnt = cnt + 1
 
 # Link 1---(n-2)
