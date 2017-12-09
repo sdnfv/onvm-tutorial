@@ -7,7 +7,7 @@ yes n | /local/onvm/openNetVM/scripts/setup_environment.sh
 
 echo "Setting up geniuser account"
 cat mware.pub >> ~geniuser/.ssh/authorized_keys
-usermod -s /bin/bash geniuser
+sudo usermod -s /bin/bash geniuser
 echo "source /local/onvm/openNetVM/scripts/setup_cloudlab.sh" >> ~geniuser/.bashrc
 
 
