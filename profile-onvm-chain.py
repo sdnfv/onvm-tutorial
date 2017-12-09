@@ -25,10 +25,11 @@ params = portal.context.bindParameters()
 nodes = []
 cnt = 1
 NUM_NODES = params.n
+NODE_TYPE = "c220g2"
 
 for n in range(NUM_NODES):
 	node = request.RawPC("node" + str(cnt))
-	node.hardware_type = "c220g1"
+	node.hardware_type = NODE_TYPE
 	node.disk_image = 'urn:publicid:IDN+wisc.cloudlab.us+image+gwcloudlab-PG0:onvm_17.11:1'
 	nodes.append(node)
 	cnt = cnt + 1
