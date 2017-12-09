@@ -3,6 +3,7 @@
 cd /local/onvm/onvm-tutorial
 git pull
 
-cat mware.pub >> ~geniuser/.ssh/authorized_keys
+# All actual setup commands are in post_setup
+./post_setup.sh | tee /tmp/setup.log
 
-./post_setup.sh
+echo "Done."
