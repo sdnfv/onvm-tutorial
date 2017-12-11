@@ -25,11 +25,11 @@ params = portal.context.bindParameters()
 nodes = []
 cnt = 1
 NUM_NODES = params.n
-NODE_TYPE = "c220g2"
+# NODE_TYPE = "c220g2"
 
 for n in range(NUM_NODES):
 	node = request.RawPC("node" + str(cnt))
-	node.hardware_type = NODE_TYPE
+	# node.hardware_type = NODE_TYPE
 	node.disk_image = 'urn:publicid:IDN+wisc.cloudlab.us+image+gwcloudlab-PG0:onvm-tut'
 	node.addService(rspec.Execute(shell="bash", command="/local/onvm/onvm-tutorial/setup.sh"))
 	nodes.append(node)	
