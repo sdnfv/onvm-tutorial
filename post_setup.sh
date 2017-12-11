@@ -1,5 +1,7 @@
 #!/bin/bash
 
+chmod -R g+w /local/onvm/*
+
 source /local/onvm/openNetVM/scripts/setup_cloudlab.sh
 
 echo "setting DPDK/ONVM"
@@ -11,12 +13,8 @@ sudo usermod -s /bin/bash geniuser
 echo "source /local/onvm/openNetVM/scripts/setup_cloudlab.sh" >> ~geniuser/.bashrc
 
 
-# Script to add a user to Linux system
 echo "Setting up tutorial account"
-
 if [ $(id -u) -eq 0 ]; then
-	read -p "Enter username : " username
-	read -s -p "Enter password : " password
 	username="tutorial"
 	pass="paUoMiT7vjLqo"    # this is the encrypted password
 	egrep "^$username" /etc/passwd >/dev/null
@@ -24,7 +22,7 @@ if [ $(id -u) -eq 0 ]; then
 		echo "$username exists!"
 	else
 		# pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
-		useradd -m -p $pass $username
+		useradd -m -p $pass -G root $username
 		[ $? -eq 0 ] && echo "User has been added to system!" || echo "Failed to add a user!"
 	fi
 else
