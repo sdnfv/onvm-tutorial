@@ -1,36 +1,43 @@
 
-# ONVM Tutorial at CleanSky ITN 8/3/16
+# ONVM Tutorial at Middleware 12/11/17
 
 Here is the server information we will be using:
 ```
-node 1       ssh tutorial@c220g2-011003.wisc.cloudlab.us
-node 2       ssh tutorial@c220g2-011007.wisc.cloudlab.us
-node 3       ssh tutorial@c220g2-011306.wisc.cloudlab.us
-node 4       ssh tutorial@c220g2-011313.wisc.cloudlab.us
-node 5       ssh tutorial@c220g2-011308.wisc.cloudlab.us
-node 6       ssh tutorial@c220g2-011317.wisc.cloudlab.us
-node 7       ssh tutorial@c220g2-011307.wisc.cloudlab.us
-node 8       ssh tutorial@c220g2-011315.wisc.cloudlab.us
+node1     ssh tutorial@c220g2-011319.wisc.cloudlab.us  
+node2     ssh tutorial@c220g2-011314.wisc.cloudlab.us  
+node3     ssh tutorial@c220g2-011303.wisc.cloudlab.us  
+node4     ssh tutorial@c220g1-030611.wisc.cloudlab.us  
+node5     ssh tutorial@c220g1-030620.wisc.cloudlab.us  
+node6     ssh tutorial@c220g1-030614.wisc.cloudlab.us  
+node7     ssh tutorial@c220g1-030819.wisc.cloudlab.us  
+node8     ssh tutorial@c220g1-030801.wisc.cloudlab.us  
+node9     ssh tutorial@c220g1-030807.wisc.cloudlab.us  
+node10    ssh tutorial@c220g1-030817.wisc.cloudlab.us  
+node11    ssh tutorial@c220g1-030816.wisc.cloudlab.us  
+node12    ssh tutorial@c220g1-030820.wisc.cloudlab.us  
 ```
-You will be assigned node 3, 4, 5, 6, or 7.  Please do not use any servers not assigned to you. You may only use these servers for the tutorial; let me know if you want to keep playing with things after the session ends.
 
-Thanks to [CloudLab.us](http://cloudlab.us) for the servers! These servers are of type c220g2 from the Wisconsin site, with Two Intel E5-2660 v3 10-core CPUs at 2.60 GHz (Haswell EP), 160GB RAM, and a Dual-port Intel X520 10Gb NIC.
+You will be assigned a specific node.  Please do not use any servers not assigned to you. You may only use these servers for the tutorial; let me know if you want to keep playing with things after the session ends.
+
+Thanks to [CloudLab.us](http://cloudlab.us) for the servers! These servers are of type c220g1 or c220g2 from the Wisconsin site, with 8-10 CPU cores, 160GB RAM, and a Dual-port Intel X520 10Gb NIC.
 
 ## 1. Log in and Setup Environment
 
 Log into your server using the username and password provided in the slides. Open two SSH connections to your server (one for the manager, one for running an NF).
 
-After you log in, run these commands **in both terminals** and verify you are now in the `/local/openNetVM/` directory.
+After you log in, run these commands **in one terminal** and verify you are now in the `/local/openNetVM/` directory.
 ```bash
 # become root
 sudo -s
-# load environment variables
-source /local/config_onvm.sh
 # change to ONVM main directory
-cd $ONVM
+cd $ONVM_HOME
 ls -l
 pwd
+# configure DPDK to use NICs
+./scripts/setup_nics.sh dpdk
 ```
+
+Repeat the commands **in the second terminal**, except for the last line.
 
 **Don't proceed to the next step until instructed.**
 
@@ -39,11 +46,11 @@ pwd
 Use these commands to start the NF Manager. It will display some logs from DPDK, and then start a stats loop that displays information about network ports and active NFs.
 
 ```bash
-cd $ONVM/onvm
-./go.sh  0,1,2,3  3
+cd $ONVM_HOME/onvm
+./go.sh  0,1,2  3 -s stdout
 # usage: ./go.sh CORE_LIST PORT_BITMASK
 ```
-The above command starts the manager using cores 0, 1, 2, and 3. It uses a bitmaks of 3 to specify that ports 1 and 2 should be used (3 = 0b11).
+The above command starts the manager using cores 0, 1, and 2. It uses a bitmaks of 3 to specify that ports 1 and 2 should be used (3 = 0b11).
 
 You should see output like the following:
 ```
@@ -64,7 +71,7 @@ Next use your second window to start the Speed Tester NF.  When run in this way,
 **Be sure the manager is still running in your other window.**
 
 ```bash
-cd $ONVM/examples/speed_tester
+cd $ONVM_HOME/examples/speed_tester
 ./go.sh 4 1 1
 # usage: ./go.sh CORE_LIST NF_ID DEST_ID
 ```
@@ -83,16 +90,17 @@ This shows the NF is able to process about 21 million packets per second.
 After killing the speed tester, use the same window to run the Bridge NF.  This NF reads packets from one port and sends them out the other port.
 
 ```bash
-cd examples/bridge
+cd ../bridge
 ./go.sh 4 1
 # usage: ./go.sh CORE_LIST NF_ID
 ```
-We are running the NF using core 4 (since the manager used 0-3) and assigning it service ID 1 since by default the manager delivers all new packets to that service.
+We are running the NF using core 4 (since the manager used 0-2) and assigning it service ID 1 since by default the manager delivers all new packets to that service.
 
 **Keep your bridge NF running until we have the full chain of 8 servers working.  (Cross your fingers this will work)**
 
 ## Help!? Troubleshooting Guide
 Check the following:
   - Are you running the NF manager?  It should print stats every few seconds if it is working correctly. It must be started before any other NFs.
+  - Did you bind the NIC ports to DPDK using the `$ONVM_HOME/scripts/setup_nics.sh dpdk` command?
   - Does the manager fail to start with an error about huge pages? Be sure you don't have an old version of the manager running: `killall onvm_mgr` Try running `rm -rf /mnt/huge/rte*` to clean out the old huge pages.
-  - Is performance terrible?  Make sure you aren't using the same core for two NFs or for both the manager and an NF.  The core IDs in the lists should be unique and all from the same socket.  Run `$ONVM/scripts/corehelper.py -c` to see a list of core IDs and their mapping to sockets.
+  - Is performance terrible?  Make sure you aren't using the same core for two NFs or for both the manager and an NF.  The core IDs in the lists should be unique and all from the same socket.  Run `$ONVM_HOME/scripts/corehelper.py -c` to see a list of core IDs and their mapping to sockets.
