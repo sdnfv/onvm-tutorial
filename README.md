@@ -131,5 +131,5 @@ ping 192.168.1.12
 iperf -s
 
 # run on FIRST node to send to iperf server on last
-iperf -c 192.168.1.12
+iperf -i 5 -5 60 -c 192.168.1.12
 ```
