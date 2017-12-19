@@ -30,9 +30,25 @@ else
 fi
 
 mkdir ~tutorial/.ssh
-chown tutorial ~tutorial/.ssh
 cat mware.pub >> ~tutorial/.ssh/authorized_keys
-chown tutorial ~tutorial/.ssh/*
+chmod 600 ~tutorial/.ssh/authorized_keys
+chown -R tutorial ~tutorial
 sudo usermod -s /bin/bash tutorial
-echo "source /local/onvm/openNetVM/scripts/setup_cloudlab.sh" >> ~tutorial/.bashrc
+grep "setup_cloudlab.sh" ~tutorial/.bashrc >/dev/null
+if [ $? -eq 0 ]; then
+	echo "tutorial bashrc already has setup_cloudlab scripts"
+else
+	echo "source /local/onvm/openNetVM/scripts/setup_cloudlab.sh" >> ~tutorial/.bashrc
+fi
+
+echo "Setup ONVM environment for all users"
+for f in /users/*/.bashrc
+do
+	grep "setup_cloudlab.sh" $f >/dev/null
+	if [ $? -eq 0 ]; then
+		echo "$f already has ONVM setup"
+	else
+		echo "source /local/onvm/openNetVM/scripts/setup_cloudlab.sh" >> $f
+	fi
+done
 

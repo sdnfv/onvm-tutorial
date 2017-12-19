@@ -3,18 +3,18 @@
 
 Here is the server information we will be using:
 ```
-node1     ssh tutorial@c220g2-011319.wisc.cloudlab.us  
-node2     ssh tutorial@c220g2-011314.wisc.cloudlab.us  
-node3     ssh tutorial@c220g2-011303.wisc.cloudlab.us  
-node4     ssh tutorial@c220g1-030611.wisc.cloudlab.us  
-node5     ssh tutorial@c220g1-030620.wisc.cloudlab.us  
-node6     ssh tutorial@c220g1-030614.wisc.cloudlab.us  
-node7     ssh tutorial@c220g1-030819.wisc.cloudlab.us  
-node8     ssh tutorial@c220g1-030801.wisc.cloudlab.us  
-node9     ssh tutorial@c220g1-030807.wisc.cloudlab.us  
-node10    ssh tutorial@c220g1-030817.wisc.cloudlab.us  
-node11    ssh tutorial@c220g1-030816.wisc.cloudlab.us  
-node12    ssh tutorial@c220g1-030820.wisc.cloudlab.us  
+node1   ssh tutorial@c220g2-011019.wisc.cloudlab.us
+node2   ssh tutorial@c220g2-011010.wisc.cloudlab.us
+node3   ssh tutorial@c220g2-011009.wisc.cloudlab.us
+node4   ssh tutorial@c220g2-011112.wisc.cloudlab.us
+node5   ssh tutorial@c220g2-011330.wisc.cloudlab.us
+node6   ssh tutorial@c220g2-011106.wisc.cloudlab.us
+node7   ssh tutorial@c220g2-011325.wisc.cloudlab.us
+node8   ssh tutorial@c220g2-030631.wisc.cloudlab.us
+node9   ssh tutorial@c220g1-030625.wisc.cloudlab.us
+node10  ssh tutorial@c220g2-030632.wisc.cloudlab.us
+node11  ssh tutorial@c220g2-011011.wisc.cloudlab.us
+node12  ssh tutorial@c220g2-011018.wisc.cloudlab.us    
 ```
 
 You will be assigned a specific node.  Please do not use any servers not assigned to you. You may only use these servers for the tutorial; let me know if you want to keep playing with things after the session ends.
@@ -104,3 +104,32 @@ Check the following:
   - Did you bind the NIC ports to DPDK using the `$ONVM_HOME/scripts/setup_nics.sh dpdk` command?
   - Does the manager fail to start with an error about huge pages? Be sure you don't have an old version of the manager running: `killall onvm_mgr` Try running `rm -rf /mnt/huge/rte*` to clean out the old huge pages.
   - Is performance terrible?  Make sure you aren't using the same core for two NFs or for both the manager and an NF.  The core IDs in the lists should be unique and all from the same socket.  Run `$ONVM_HOME/scripts/corehelper.py -c` to see a list of core IDs and their mapping to sockets.
+
+## Instructor Notes
+To send traffic through the chain run these commands on the FIRST and LAST nodes in the chain:
+```
+# be sure you are running as root
+sudo -s
+
+# be sure NICs are properly configured to use kernel interface
+$ONVM_HOME/scripts/setup_nics.sh kernel
+
+# set IP on the FIRST node:
+ifconfig eth2 192.168.1.1
+
+# set the IP on the LAST node:
+ifconfig eth2 192.168.1.12
+
+```
+
+Now you can send traffic with these commands:
+```
+# run on first node to send to last
+ping 192.168.1.12
+
+# run on LAST node to act as iperf server
+iperf -s
+
+# run on FIRST node to send to iperf server on last
+iperf -c 192.168.1.12
+```
