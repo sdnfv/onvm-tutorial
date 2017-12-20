@@ -1,9 +1,11 @@
 
-# ONVM Tutorial at Middleware 12/11/17
+# ONVM Tutorial at NITK December 2017
 
 Here is the server information we will be using:
+
+**Group A:**
 ```
-node1   ssh tutorial@c220g2-011301.wisc.cloudlab.us     
+node1   ssh tutorial@c220g2-011301.wisc.cloudlab.us (instructor node) 
 node2   ssh tutorial@c220g2-011313.wisc.cloudlab.us     
 node3   ssh tutorial@c220g2-011316.wisc.cloudlab.us     
 node4   ssh tutorial@c220g2-011314.wisc.cloudlab.us     
@@ -14,7 +16,24 @@ node8   ssh tutorial@c220g2-011131.wisc.cloudlab.us
 node9   ssh tutorial@c220g2-011126.wisc.cloudlab.us     
 node10  ssh tutorial@c220g2-011124.wisc.cloudlab.us     
 node11  ssh tutorial@c220g2-011117.wisc.cloudlab.us     
-node12  ssh tutorial@c220g2-011123.wisc.cloudlab.us    
+node12  ssh tutorial@c220g2-011123.wisc.cloudlab.us (instructor node) 
+```
+
+**Group B:**
+```
+node1   ssh tutorial@c220g1-030623.wisc.cloudlab.us (instructor node) 
+node2   ssh tutorial@c220g2-030632.wisc.cloudlab.us
+node3   ssh tutorial@c220g2-030631.wisc.cloudlab.us
+node4   ssh tutorial@c220g1-030625.wisc.cloudlab.us
+node5   ssh tutorial@c220g2-011128.wisc.cloudlab.us
+node6   ssh tutorial@c220g2-011121.wisc.cloudlab.us
+node7   ssh tutorial@c220g2-011122.wisc.cloudlab.us
+node8   ssh tutorial@c220g2-011005.wisc.cloudlab.us
+node9   ssh tutorial@c220g2-011009.wisc.cloudlab.us
+node10  ssh tutorial@c220g2-011010.wisc.cloudlab.us
+node11  ssh tutorial@c220g2-011011.wisc.cloudlab.us
+node12  ssh tutorial@c220g1-030627.wisc.cloudlab.us (instructor node)
+
 ```
 
 You will be assigned a specific node.  Please do not use any servers not assigned to you. You may only use these servers for the tutorial; let me know if you want to keep playing with things after the session ends.
