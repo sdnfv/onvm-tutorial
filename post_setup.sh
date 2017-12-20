@@ -38,7 +38,7 @@ grep "setup_cloudlab.sh" ~tutorial/.bashrc >/dev/null
 if [ $? -eq 0 ]; then
 	echo "tutorial bashrc already has setup_cloudlab scripts"
 else
-	echo "source /local/onvm/openNetVM/scripts/setup_cloudlab.sh" >> ~tutorial/.bashrc
+	echo "source /local/onvm/openNetVM/scripts/setup_cloudlab.sh; unset ONVM_PATH" >> ~tutorial/.bashrc
 fi
 
 echo "Setup ONVM environment for all users"
@@ -48,7 +48,7 @@ do
 	if [ $? -eq 0 ]; then
 		echo "$f already has ONVM setup"
 	else
-		echo "source /local/onvm/openNetVM/scripts/setup_cloudlab.sh" >> $f
+		echo "source /local/onvm/openNetVM/scripts/setup_cloudlab.sh; unset ONVM_PATH" >> $f
 	fi
 done
 
