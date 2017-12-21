@@ -153,7 +153,7 @@ Check the following:
 
 ## Instructor Notes
 To send traffic through the chain run these commands on the FIRST and LAST nodes in the chain:
-```
+```bash
 # be sure you are running as root
 sudo -s
 
@@ -169,7 +169,7 @@ ifconfig eth2 192.168.1.12
 ```
 
 Now you can send traffic with these commands:
-```
+```bash
 # run on first node to send to last
 ping 192.168.1.12
 
@@ -179,3 +179,7 @@ iperf -s
 # run on FIRST node to send to iperf server on last
 iperf -i 5 -t 60 -c 192.168.1.12
 ```
+
+Other notes:
+ - To enable password-based SSH access run this on each server: `sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config`
+ 
