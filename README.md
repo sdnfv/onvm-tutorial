@@ -91,7 +91,7 @@ Next use your second window to start the Speed Tester NF.  When run in this way,
 
 ```bash
 cd $ONVM_HOME/examples/speed_tester
-./go.sh 4 1 1
+./go.sh 3 1 1
 # usage: ./go.sh CORE_LIST NF_ID DEST_ID
 ```
 
@@ -110,12 +110,39 @@ After killing the speed tester, use the same window to run the Bridge NF.  This 
 
 ```bash
 cd ../bridge
-./go.sh 4 1
+./go.sh 3 1
 # usage: ./go.sh CORE_LIST NF_ID
 ```
-We are running the NF using core 4 (since the manager used 0-2) and assigning it service ID 1 since by default the manager delivers all new packets to that service.
+We are running the NF using core 3 (since the manager used 0-2) and assigning it service ID 1 since by default the manager delivers all new packets to that service.
 
-**Keep your bridge NF running until we have the full chain of 8 servers working.  (Cross your fingers this will work)**
+**Keep your bridge NF running until we have the full chain of servers working.**
+
+## 5. Chaining Within a Server
+OpenNetVM is primarily designed to facilitate service chaining within a server. NFs can specify whether packets should be sent out the NIC or delivered to another NF based on a service ID number. Next we will run a chain of two NFs on each server. The first NF will be a "Simple Forward" NF that sends all incoming packets to a different NF. The second will be the Bridge NF used above that transmits the packets out the NIC.
+
+**You will need to open another terminal on your server so that you can simultaneously run the manager, the Bridge, and the Simple Forward NFs.** Use these commands in each terminal:
+
+```bash
+# Terminal 1: ONVM Manager (skip this if it is already running)
+cd $ONVM_HOME/onvm
+./go.sh  0,1,2  3 -s stdout
+# parameters: CPU cores=0, 1, and 2, Port bitmask=3 (first two ports), and send stats to stdout
+
+# Terminal 2: Simple Forward NF
+cd $ONVM_HOME/examples/simple_forward
+./go.sh  3 1 2
+# parameters: CPU core=3, ID=1, Destination ID=2
+
+# Terminal 3: Bridge NF
+cd $ONVM_HOME/examples/bridge
+./go.sh  4 2
+# parameters: CPU core=4, ID=2
+
+```
+Be sure that your Simple Forward NF has ID 1 (so the manager will use it as the default NF) and that its destination ID is the same ID as your Bridge NF. Also be sure that the NFs are assigned different CPU cores. If you want, you can run multiple Simple Forward NFs in a chain, but be sure the final NF is a Bridge. You will be limited by the number of available CPU cores.
+
+**Keep your chain of NFs running until we have the full chain of chains working.**
+
 
 ## Help!? Troubleshooting Guide
 Check the following:
