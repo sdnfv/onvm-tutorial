@@ -21,18 +21,18 @@ node12  ssh tutorial@c220g2-011123.wisc.cloudlab.us (instructor node)
 
 **Group B:**
 ```
-node1   ssh timwoo0@c220g2-011315.wisc.cloudlab.us (instructor node) 
-node2   ssh timwoo0@c220g2-011303.wisc.cloudlab.us
-node3   ssh timwoo0@c220g2-011319.wisc.cloudlab.us
-node4   ssh timwoo0@c220g1-030617.wisc.cloudlab.us
-node5   ssh timwoo0@c220g1-030611.wisc.cloudlab.us
-node6   ssh timwoo0@c220g1-030602.wisc.cloudlab.us
-node7   ssh timwoo0@c220g1-030620.wisc.cloudlab.us
-node8   ssh timwoo0@c220g1-030609.wisc.cloudlab.us
-node9   ssh timwoo0@c220g1-030613.wisc.cloudlab.us
-node10  ssh timwoo0@c220g1-030614.wisc.cloudlab.us
-node11  ssh timwoo0@c220g1-030612.wisc.cloudlab.us
-node12  ssh timwoo0@c220g1-030601.wisc.cloudlab.us (instructor node) 
+node1   ssh timwoo0@c220g2-011129.wisc.cloudlab.us (instructor node) 
+node2   ssh timwoo0@c220g2-011122.wisc.cloudlab.us
+node3   ssh timwoo0@c220g2-011005.wisc.cloudlab.us
+node4   ssh timwoo0@c220g2-011009.wisc.cloudlab.us
+node5   ssh timwoo0@c220g2-011010.wisc.cloudlab.us
+node6   ssh timwoo0@c220g2-011011.wisc.cloudlab.us
+node7   ssh timwoo0@c220g2-030632.wisc.cloudlab.us
+node8   ssh timwoo0@c220g2-030631.wisc.cloudlab.us
+node9   ssh timwoo0@c220g2-011106.wisc.cloudlab.us
+node10  ssh timwoo0@c220g2-011112.wisc.cloudlab.us
+node11  ssh timwoo0@c220g2-031132.wisc.cloudlab.us
+node12  ssh timwoo0@c220g2-031131.wisc.cloudlab.us (instructor node) 
 ```
 
 You will be assigned a specific node.  Please do not use any servers not assigned to you. You may only use these servers for the tutorial; let me know if you want to keep playing with things after the session ends.
@@ -47,11 +47,11 @@ After you log in, run these commands **in one terminal** and verify you are now 
 ```bash
 # become root
 sudo -s
-# change to ONVM main directory
+# change to ONVM main directory and look around
 cd $ONVM_HOME
 ls -l
 pwd
-# configure DPDK to use NICs
+# configure DPDK to use NICs instead of kernel stack
 ./scripts/setup_nics.sh dpdk
 ```
 
@@ -77,9 +77,9 @@ Port 0: '90:e2:ba:b5:01:f4'     Port 1: '90:e2:ba:b5:01:f5'
 Port 0 - rx:        0  (        0 pps) tx:         0  (        0 pps)
 Port 1 - rx:        0  (        0 pps) tx:         0  (        0 pps)
 
-CLIENTS
+NFS
 ```
-This shows no packets have arrived and there are currently no clients (NFs).
+This shows no packets have arrived and there are currently no NFs.
 
 **Don't proceed to the next step until instructed.**
 
@@ -106,14 +106,14 @@ This shows the NF is able to process about 21 million packets per second. You ca
 
 
 ## 4. Bridging Ports
-After killing the speed tester, use the same window to run the Bridge NF.  This NF reads packets from one port and sends them out the other port.
+After killing the speed tester, use the same window to run the Bridge NF.  This NF reads packets from one port and sends them out the other port. You can see the code for the [Bridge NF here](https://github.com/sdnfv/openNetVM/blob/develop/examples/bridge/bridge.c#L141), it is quite a bit simpler than the [equivalent DPDK example](https://github.com/sdnfv/onvm-dpdk/blob/onvm/examples/skeleton/basicfwd.c) since the OpenNetVM manager handles the low-level details.
 
 ```bash
 cd ../bridge
 ./go.sh 3 1
 # usage: ./go.sh CORE_LIST NF_ID
 ```
-We are running the NF using core 3 (since the manager used 0-2) and assigning it service ID 1 since by default the manager delivers all new packets to that service. You can see the code for the [Bridge NF here](https://github.com/sdnfv/openNetVM/blob/develop/examples/bridge/bridge.c#L141).
+We are running the NF using core 3 (since the manager used 0-2) and assigning it service ID 1 since by default the manager delivers all new packets to that service. 
 
 **Keep your bridge NF running until we have the full chain of servers working.**
 
