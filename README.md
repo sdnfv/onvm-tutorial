@@ -45,7 +45,7 @@ Log into your server using the username and password provided in the slides. Ope
 
 After you log in, run these commands **in one terminal** and verify you are now in the `/local/openNetVM/` directory.
 ```bash
-############# SLIDE 1 COMMANDS #############
+############# STEP 1 COMMANDS #############
 
 # become root
 sudo -s
@@ -66,7 +66,7 @@ Repeat the commands **in the second terminal**, except for the last line.
 Use these commands to start the NF Manager. It will display some logs from DPDK, and then start a stats loop that displays information about network ports and active NFs.
 
 ```bash
-############# SLIDE 2 COMMANDS #############
+############# STEP 2 COMMANDS #############
 
 cd $ONVM_HOME/onvm
 ./go.sh  0,1,2  3 -s stdout
@@ -93,7 +93,7 @@ Next use your second window to start the Speed Tester NF.  When run in this way,
 **Be sure the manager is still running in your other window.**
 
 ```bash
-############# SLIDE 3 COMMANDS #############
+############# STEP 3 COMMANDS #############
 cd $ONVM_HOME/examples/speed_tester
 ./go.sh 3 1 1
 # usage: ./go.sh CORE_LIST NF_ID DEST_ID
@@ -114,7 +114,7 @@ This shows the NF is able to process about 21 million packets per second. You ca
 After killing the speed tester, use the same window to run the Bridge NF.  This NF reads packets from one port and sends them out the other port. You can see the code for the [Bridge NF here](https://github.com/sdnfv/openNetVM/blob/develop/examples/bridge/bridge.c#L141), it is quite a bit simpler than the [equivalent DPDK example](https://github.com/sdnfv/onvm-dpdk/blob/onvm/examples/skeleton/basicfwd.c) since the OpenNetVM manager handles the low-level details.
 
 ```bash
-############# SLIDE 4 COMMANDS #############
+############# STEP 4 COMMANDS #############
 
 cd ../bridge
 ./go.sh 3 1
@@ -130,7 +130,7 @@ OpenNetVM is primarily designed to facilitate service chaining within a server. 
 **You will need to open another terminal on your server so that you can simultaneously run the manager, the Bridge, and the Simple Forward NFs.** Use these commands in each terminal:
 
 ```bash
-############# SLIDE 5 COMMANDS #############
+############# STEP 5 COMMANDS #############
 
 # Terminal 1: ONVM Manager (skip this if it is already running)
 cd $ONVM_HOME/onvm
