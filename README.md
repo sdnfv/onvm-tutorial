@@ -43,7 +43,7 @@ Thanks to [CloudLab.us](http://cloudlab.us) for the servers! These servers are o
 
 Log into your server using the username and password provided in the slides. Open two SSH connections to your server (one for the manager, one for running an NF).
 
-After you log in, run these commands **in one terminal** and verify you are now in the `/local/openNetVM/` directory.
+After you log in, run these commands **in one terminal** and verify you are now in the `/local/openNetVM/` directory.  **Be sure to run each command line that doesn't start with a `#` comment!**
 ```bash
 ############# STEP 1 COMMANDS #############
 
