@@ -198,4 +198,4 @@ iperf -i 5 -t 60 -c 192.168.1.12
 ```
 
 Other notes:
- - To enable password-based SSH access run this on each server: `sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config`
+ - To enable password-based SSH access run this on each server: `sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config; sudo service ssh restart`
