@@ -35,6 +35,14 @@ node11  ssh tutorial@c220g2-031132.wisc.cloudlab.us
 node12  ssh tutorial@c220g2-031131.wisc.cloudlab.us (instructor node) 
 ```
 
+**Group C: (Instructor test nodes)**
+```
+node1	ssh tutorial@c220g2-011024.wisc.cloudlab.us
+node2	ssh tutorial@c220g1-030823.wisc.cloudlab.us
+node3	ssh tutorial@c220g2-011014.wisc.cloudlab.us	
+```
+
+
 You will be assigned a specific node.  Please do not use any servers not assigned to you. You may only use these servers for the tutorial; let me know if you want to keep playing with things after the session ends.
 
 Thanks to [CloudLab.us](http://cloudlab.us) for the servers! These servers are of type c220g1 or c220g2 from the Wisconsin site, with 8-10 CPU cores, 160GB RAM, and a Dual-port Intel X520 10Gb NIC.
@@ -156,7 +164,7 @@ Be sure that your Simple Forward NF has ID 1 (so the manager will use it as the 
 ## Help!? Troubleshooting Guide
 Check the following:
   - Are you running the NF manager?  It should print stats every few seconds if it is working correctly. It must be started before any other NFs.
-  - Did you bind the NIC ports to DPDK using the `$ONVM_HOME/scripts/setup_nics.sh dpdk` command?
+  - Did you bind the NIC ports to DPDK using the `$ONVM_HOME/scripts/setup_nics.sh dpdk` command? If you don't do this you will get a `WARNING: requested port 0 not present - ignoring` error when running the manager.
   - Does the manager fail to start with an error about huge pages? Be sure you don't have an old version of the manager running: `killall onvm_mgr` Try running `rm -rf /mnt/huge/rte*` to clean out the old huge pages.
   - Is performance terrible?  Make sure you aren't using the same core for two NFs or for both the manager and an NF.  The core IDs in the lists should be unique and all from the same socket.  Run `$ONVM_HOME/scripts/corehelper.py -c` to see a list of core IDs and their mapping to sockets.
 
