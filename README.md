@@ -46,7 +46,7 @@ Thanks to [CloudLab.us](http://cloudlab.us) for the servers! These servers are o
 
 ## 1. Log in and Setup Environment
 
-Log into your server using the username and password provided in the slides. Open two SSH connections to your server (one for the manager, one for running an NF).
+Log into your server using the username and password provided in the slides. Open **TWO** SSH connections to your server (one for the manager, one for running an NF).
 
 After you log in, run these commands **in one terminal** and verify you are now in the `/local/openNetVM/` directory.  **Be sure to run each command line that doesn't start with a `#` comment!**
 ```bash
@@ -66,12 +66,30 @@ Repeat the commands **in the second terminal**, except for the last line.
 
 **Don't proceed to the next step until instructed.**
 
-## 2. Start the ONVM NF Manager
+## 2. DPDK Basic Forwarding
+We will start with the simplest DPDK example that forwards packets from one interface to another.
+
+```bash
+############# STEP 2 COMMANDS #############
+# Chanage to the DPDK forwarding example
+cd $RTE_SDK/examples/skeleton
+./go.sh 
+
+```
+This will display some output as DPDK initializes the ports for forwarding.
+
+Now the instructor will send traffic through the host... if all the forwarders have been started correctly we will see it come out the other side!
+
+To understand how this works, look at the `basicfwd.c` file, which is well documented here: http://doc.dpdk.org/guides/sample_app_ug/skeleton.html
+
+**Next we will learn about OpenNetVM. Don't proceed to the next step until instructed.**
+
+## 3. Start the ONVM NF Manager
 
 Use these commands to start the NF Manager. It will display some logs from DPDK, and then start a stats loop that displays information about network ports and active NFs.
 
 ```bash
-############# STEP 2 COMMANDS #############
+############# STEP 3 COMMANDS #############
 
 cd $ONVM_HOME/onvm
 ./go.sh  0,1,2  3 -s stdout
@@ -92,13 +110,13 @@ This shows no packets have arrived and there are currently no NFs.
 
 **Don't proceed to the next step until instructed.**
 
-## 3. Speed Tester Benchmark
+## 4. Speed Tester Benchmark
 Next use your second window to start the Speed Tester NF.  When run in this way, the Speed Tester simply creates a batch of packets and repeatedly sends them to itself in order to stress test the management system.
 
 **Be sure the manager is still running in your other window.**
 
 ```bash
-############# STEP 3 COMMANDS #############
+############# STEP 4 COMMANDS #############
 cd $ONVM_HOME/examples/speed_tester
 ./go.sh 3 1 1
 # usage: ./go.sh CORE_LIST NF_ID DEST_ID
@@ -115,11 +133,11 @@ This shows the NF is able to process about 21 million packets per second. You ca
 **Kill the speed tester by pressing `ctrl-c` before proceeding to the next step.**  Leave the manager running.
 
 
-## 4. Bridging Ports
+## 5. Bridging Ports
 After killing the speed tester, use the same window to run the Bridge NF.  This NF reads packets from one port and sends them out the other port. You can see the code for the [Bridge NF here](https://github.com/sdnfv/openNetVM/blob/develop/examples/bridge/bridge.c#L141), it is quite a bit simpler than the [equivalent DPDK example](https://github.com/sdnfv/onvm-dpdk/blob/onvm/examples/skeleton/basicfwd.c) since the OpenNetVM manager handles the low-level details.
 
 ```bash
-############# STEP 4 COMMANDS #############
+############# STEP 5 COMMANDS #############
 
 cd ../bridge
 ./go.sh 3 1
@@ -129,13 +147,13 @@ We are running the NF using core 3 (since the manager used 0-2) and assigning it
 
 **Keep your bridge NF running until we have the full chain of servers working.**
 
-## 5. Chaining Within a Server
+## 6. Chaining Within a Server
 OpenNetVM is primarily designed to facilitate service chaining within a server. NFs can specify whether packets should be sent out the NIC or delivered to another NF based on a service ID number. Next we will run a chain of two NFs on each server. The first NF will be a "Simple Forward" NF that sends all incoming packets to a different NF. The second will be the Bridge NF used above that transmits the packets out the NIC.
 
 **You will need to open another terminal on your server so that you can simultaneously run the manager, the Bridge, and the Simple Forward NFs.** Use these commands in each terminal:
 
 ```bash
-############# STEP 5 COMMANDS #############
+############# STEP 6 COMMANDS #############
 
 # Terminal 1: ONVM Manager (skip this if it is already running)
 cd $ONVM_HOME/onvm
