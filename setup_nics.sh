@@ -92,6 +92,13 @@ else
     exit 1
 fi
 
+if [ "$driver" == "$dpdk_drv" ]; then
+    for iface in $(ifconfig | grep "HWaddr 90:" | cut -f 1 -d " ")
+    do
+        ifconfig $iface down
+    done
+fi
+
 # dpdk_nic_bind.py has been changed to dpdk-devbind.py to be compatible with DPDK 16.11
 echo "Binding NIC status"
 if [ -z "$ONVM_NIC_PCI" ];then
