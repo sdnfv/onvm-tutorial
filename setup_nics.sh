@@ -41,7 +41,7 @@
 #     Or to all $ONVM_NIC_PCI NICs if its defined
 
 #DPDK_DEVBIND=$RTE_SDK/usertools/dpdk-devbind.py # for DPDK 17 and up 
-DPDK_DEVBIND=$RTE_SDK/tools/dpdk-devbind.py # for DPDK 16.11
+DPDK_DEVBIND=$RTE_SDK/usertools/dpdk-devbind.py # for DPDK 16.11
 #DPK_DEVBIND=#RTE_SDK/tools/dpdk_nic_bind.py # for DPDK 2.2 D
 
 kernel_drv=ixgbe
