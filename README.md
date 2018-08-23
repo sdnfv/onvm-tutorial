@@ -1,35 +1,36 @@
 
-# ONVM Tutorial at ICDCS July 2018
+# ONVM Tutorial at SIGCOMM 2018
 
 Here is the server information we will be using:
 
 **Group A:**
 ```
+tutorial@node1.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
 
-node1	ssh tutorial@c220g2-011322.wisc.cloudlab.us	(instructor node) 	
-node2	ssh tutorial@c220g2-011317.wisc.cloudlab.us		
-node3	ssh tutorial@c220g2-011311.wisc.cloudlab.us		
-node4	ssh tutorial@c220g2-011319.wisc.cloudlab.us		
-node5	ssh tutorial@c220g2-011306.wisc.cloudlab.us		
-node6	ssh tutorial@c220g2-011318.wisc.cloudlab.us		
-node7	ssh tutorial@c220g2-011304.wisc.cloudlab.us		
-node8	ssh tutorial@c220g2-011320.wisc.cloudlab.us		
-node9	ssh tutorial@c220g2-011307.wisc.cloudlab.us	
-node10	ssh tutorial@c220g2-011309.wisc.cloudlab.us	(instructor node) 
+ssh tutorial@node1.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us  # (instructor node) 	
+ssh tutorial@node2.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node3.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node4.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node5.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node6.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node7.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node8.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node9.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node10.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us # (instructor node) 
 ```
 
 **Group B:**
 ```
-node1	ssh tutorial@c220g2-011004.wisc.cloudlab.us	(instructor node) 	
-node2	ssh tutorial@c220g2-011008.wisc.cloudlab.us		
-node3	ssh tutorial@c220g2-011002.wisc.cloudlab.us		
-node4	ssh tutorial@c220g2-011003.wisc.cloudlab.us		
-node5	ssh tutorial@c220g2-011129.wisc.cloudlab.us		
-node6	ssh tutorial@c220g2-011118.wisc.cloudlab.us		
-node7	ssh tutorial@c220g2-011127.wisc.cloudlab.us		
-node8	ssh tutorial@c220g2-011123.wisc.cloudlab.us		
-node9	ssh tutorial@c220g2-011007.wisc.cloudlab.us		
-node10	ssh tutorial@c220g2-011125.wisc.cloudlab.us	(instructor node) 
+ssh tutorial@node1.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us  # (instructor node) 	
+ssh tutorial@node2.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node3.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node4.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node5.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node6.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node7.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node8.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node9.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us
+ssh tutorial@node10.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us # (instructor node) 
 ```
 
 **Group C: (Instructor test nodes)**
@@ -73,7 +74,7 @@ We will start with the simplest DPDK example that forwards packets from one inte
 ############# STEP 2 COMMANDS #############
 # Chanage to the DPDK forwarding example
 cd $RTE_SDK/examples/skeleton
-./go.sh 
+./go.sh   ## this is equivalent to: ./build/basicfwd -l 1 -n 4
 
 ```
 This will display some output as DPDK initializes the ports for forwarding.
