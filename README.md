@@ -70,7 +70,7 @@ We will start with the simplest DPDK example that forwards packets from one inte
 
 ```bash
 ############# STEP 2 COMMANDS #############
-# Chanage to the DPDK forwarding example
+# Change to the DPDK forwarding example
 cd $RTE_SDK/examples/skeleton
 ./go.sh   ## this is equivalent to: ./build/basicfwd -l 1 -n 4
 
@@ -129,17 +129,26 @@ Packets per group: 128
 ```
 This shows the NF is able to process about 21 million packets per second. You can see the code for the [Speed Tester NF here](https://github.com/sdnfv/openNetVM/blob/develop/examples/simple_forward/forward.c#L152).
 
-**Kill the speed tester by pressing `ctrl-c` before proceeding to the next step.**  Leave the manager running.
+**Kill the both the speed tester and manager by pressing `ctrl-c` before proceeding to the next step.** 
 
 
 ## 5. Bridging Ports
-After killing the speed tester, use the same window to run the Bridge NF.  This NF reads packets from one port and sends them out the other port. You can see the code for the [Bridge NF here](https://github.com/sdnfv/openNetVM/blob/develop/examples/bridge/bridge.c#L141), it is quite a bit simpler than the [equivalent DPDK example](https://github.com/sdnfv/onvm-dpdk/blob/onvm/examples/skeleton/basicfwd.c) since the OpenNetVM manager handles the low-level details.
+Now we will switch the manager so that it displays its statistics on a web console. In your first terminal be sure the manager has been killed, and then restart it with:
+```bash
+############# STEP 5 Manager COMMANDS #############
+
+cd $ONVM_HOME/onvm    # not necessary if you are still in same directory
+./go.sh  0,1,2  3 -s web
+```
+You will see less output since the information is being redirected to a web page (you can find the URL for your node at the bottom of this document). You do *not* need to run the `ONVM_HOME/onvm_web/start_web_console.sh` since this has already been started by the instructor.
+
+After killing the speed tester, use its window to run the Bridge NF.  This NF reads packets from one port and sends them out the other port. You can see the code for the [Bridge NF here](https://github.com/sdnfv/openNetVM/blob/develop/examples/bridge/bridge.c#L141), it is quite a bit simpler than the [equivalent DPDK example](https://github.com/sdnfv/onvm-dpdk/blob/onvm/examples/skeleton/basicfwd.c) since the OpenNetVM manager handles the low-level details.
 
 ```bash
-############# STEP 5 COMMANDS #############
+############# STEP 5 NF COMMANDS #############
 
 cd ../bridge
-./go.sh 3 1
+./go.sh 4 1
 # usage: ./go.sh CORE_LIST NF_ID
 ```
 We are running the NF using core 3 (since the manager used 0-2) and assigning it service ID 1 since by default the manager delivers all new packets to that service. 
@@ -156,8 +165,8 @@ OpenNetVM is primarily designed to facilitate service chaining within a server. 
 
 # Terminal 1: ONVM Manager (skip this if it is already running)
 cd $ONVM_HOME/onvm
-./go.sh  0,1,2  3 -s stdout
-# parameters: CPU cores=0, 1, and 2, Port bitmask=3 (first two ports), and send stats to stdout
+./go.sh  0,1,2  3 -s web
+# parameters: CPU cores=0, 1, and 2, Port bitmask=3 (first two ports), and send stats to web console
 
 # Terminal 2: Simple Forward NF
 cd $ONVM_HOME/examples/simple_forward
@@ -192,7 +201,7 @@ sudo -s
 $ONVM_HOME/scripts/setup_nics.sh kernel
 
 # set IP on the FIRST node:
-ifconfig eth2 192.168.1.1
+ifconfig eth0 192.168.1.1
 
 # set the IP on the LAST node:
 ifconfig eth2 192.168.1.12
@@ -222,4 +231,38 @@ cp /local/onvm/onvm-tutorial/setup_nics.sh /local/onvm/openNetVM/scripts/
 # enable password-based SSH access on each server: 
 sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config; sudo service ssh restart
 
+# add ymax option to web console
+cp /local/onvm/onvm-tutorial/onvm.js /local/onvm/openNetVM/onvm_web/js/
+
+# start the web console
+$ONVM_HOME/onvm_web/start_web_console.sh
+
 ```
+
+## Web Console Links
+
+Cluster 1 Web Consoles:
+ - [node 1](http://node1.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 2](http://node2.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 3](http://node3.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 4](http://node4.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 5](http://node5.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 6](http://node6.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 7](http://node7.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 8](http://node8.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 9](http://node9.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 10](http://node10.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+
+Cluster 2 Web Consoles:
+ - [node 1](http://node1.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 2](http://node2.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 3](http://node3.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 4](http://node4.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 5](http://node5.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 6](http://node6.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 7](http://node7.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 8](http://node8.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 9](http://node9.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+ - [node 10](http://node10.hpnfv2.gwcloudlab-pg0.wisc.cloudlab.us:8080/?ymax=30000000&/)
+
+Note that the console displays the last output of the manager, even if the manager has been closed/killed. If the time is not being updated, that means the manager is not running.
