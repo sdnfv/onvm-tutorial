@@ -95,7 +95,7 @@ fi
 if [ "$driver" == "$dpdk_drv" ]; then
     for iface in $(ifconfig | grep "HWaddr 90:" | cut -f 1 -d " ")
     do
-        ifconfig $iface down
+        sudo ifconfig $iface down
     done
 fi
 

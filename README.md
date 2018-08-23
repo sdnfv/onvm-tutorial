@@ -5,8 +5,6 @@ Here is the server information we will be using:
 
 **Group A:**
 ```
-tutorial@node1.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
-
 ssh tutorial@node1.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us  # (instructor node) 	
 ssh tutorial@node2.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
 ssh tutorial@node3.hpnfv1.gwcloudlab-pg0.wisc.cloudlab.us
@@ -213,5 +211,15 @@ iperf -s
 iperf -i 5 -t 60 -c 192.168.1.12
 ```
 
-Other notes:
- - To enable password-based SSH access run this on each server: `sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config; sudo service ssh restart`
+Other setup notes:
+```
+# Set password
+sudo passwd tutorial
+
+# copy NIC setup script
+cp /local/onvm/onvm-tutorial/setup_nics.sh /local/onvm/openNetVM/scripts/
+
+# enable password-based SSH access on each server: 
+sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config; sudo service ssh restart
+
+```
